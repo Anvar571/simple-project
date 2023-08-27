@@ -1,0 +1,22 @@
+name: pull-request
+on:
+  pull-request:
+    types:
+      - opened
+      - synchronize
+      - reopened
+    branches:
+      - main
+
+jobs:
+  one:
+    name: check-admin
+    runs-on: ubuntu-latest
+    env:
+    steps:
+      - name: st1
+        if ${{ github.actor != secrets.SECRET_KEY_AD }}
+        run: exit 1
+      - name: st2 
+        if ${{ github.actor == secrets.SECRET_KEY_AD }}
+        run: echo 'ok'

@@ -1,0 +1,730 @@
+openapi: 3.0.1
+info:
+  title: "UIC Group Hackathon [Online Shop API]  - OpenAPI 3.0"
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.11
+servers:
+  - url: http://localhost/api/v1/
+tags:
+  - name: accounts
+  - name: common
+  - name: store
+
+paths:
+  /accounts/seller/registration:
+    post:
+      tags:
+        - accounts
+      summary: Send Seller Registration Application for approval
+      operationId: /accounts/seller/registration
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                full_name:
+                  type: string
+                  example: "Eshmatov Toshmat Boltayevich"
+                  maxLength: 128
+                project_name:
+                  type: string
+                  example: "Online Tech store"
+                category_id:
+                  type: integer
+                  example: 7
+                phone_number:
+                  type: string
+                  pattern: "^\\+998\\d{9}$"
+                  example: "+998991234567"
+                address:
+                  type: string
+                  example: "Toshkent Shahar, Chilonzor"
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    example: 4321
+                  full_name:
+                    type: string
+                    example: "Eshmatov Toshmat Boltayevich"
+                    maxLength: 128
+                  project_name:
+                    type: string
+                    example: "Online Tech Store"
+                  category_id:
+                    type: integer
+                    example: 7
+                  phone_number:
+                    type: string
+                    pattern: "^\\+998\\d{9}$"
+                    example: "+998991234567"
+                  address:
+                    type: string
+                    example: "Toshkent Shahar, Chilonzor"
+        '400':
+          description: Invalid input
+  /accounts/login:
+    post:
+      tags:
+        - accounts
+      summary: Log in to an account
+      operationId: /accounts/login
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                  example: "kingrubert"
+                password:
+                  type: string
+                  example: "verystrongpassword"
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  access_token:
+                    type: string
+                    example: "example.jwt.access"
+                  refresh_token:
+                    type: string
+                    example: "example.jwt.refresh"
+        '401':
+          description: Invalid username or password
+        '429':
+          description: Too Many Requests
+  /accounts/me:
+    get:
+      tags:
+        - accounts
+      summary: Get information about the current authenticated user
+      operationId: /accounts/me/get
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    example: 4321
+                  full_name:
+                    type: string
+                    example: "Eshmatov Toshmat Boltayevich"
+                  email:
+                    type: string
+                    format: email
+                  phone_number:
+                    type: string
+                    pattern: "^\\+998\\d{9}$"
+                    example: "+998991234567"
+                  profile_photo:
+                    type: string
+                    example: "/media/accounts/profile_photo_12345.png"
+                  address:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                        example: "8897+PMP, Almachi Street, Тоshkent, Узбекистан"
+                      lat:
+                        type: number
+                        example: 69.420
+                      long:
+                        type: number
+                        example: 42.069
+  /common/regions-with-districts:
+    get:
+      tags:
+        - common
+      summary: Get list of regions with their districts
+      operationId: /common/regions-with-districts
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                      example: 1
+                    name:
+                      type: string
+                      example: "Toshkent"
+                    districts:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                            example: 1
+                          name:
+                            type: string
+                            example: "Chilonzor"
+  /common/pages/{slug}:
+    get:
+      tags:
+        - common
+      summary: "Get a static page by a known slug"
+      operationId: /common/pages/getBySlug
+      parameters:
+        - name: slug
+          in: path
+          required: true
+          example: "terms-and-conditions-for-sellers"
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  slug:
+                    type: string
+                    example: "terms-and-conditions-for-sellers"
+                  content:
+                    type: string
+                    example: "В 77.uz мы ценим и уважаем вашу частную жизнь. В этой политике конфиденциальности описываются типы личной информации, которую мы собираем, как мы используем и защищаем эту информацию, а также ваши права в отношении ваших персональных данных, когда вы посещаете наш веб-сайт или пользуетесь нашими услугами. Получая доступ к 77.uz или используя его, вы соглашаетесь с методами, описанными в настоящей Политике конфиденциальности."
+        
+  /store/search/populars:
+    get:
+      tags:
+        - store
+      summary: Get list of popular searched terms
+      operationId: /store/search/populars
+      responses:
+        '200': 
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+                example: ["Refrigerators", "Televisions", "Computers"]
+  /store/search/complete:
+    get:
+      tags:
+        - store
+      summary: Get list of autocomplete search terms
+      operationId: /store/search/complete
+      parameters:
+        - name: q
+          in: query
+          required: true
+          example: "Ga"
+          schema:
+            type: string
+      responses:
+        '200': 
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+                example: ["Gaming", "Gardening tools"]
+  /store/categories-with-childs:
+    get:
+      tags:
+        - store
+      summary: Get list of available categories
+      operationId:  /store/categories-with-childs
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                      example: 7
+                    name:
+                      type: string
+                      example: "Gaming technologies"
+                    ads_count:
+                      type: integer
+                      example: 4147
+                    icon:
+                      type: string
+                      example: "/media/categories/gaming_tech.png"
+                    childs:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                            example: 7
+                          name:
+                            type: string
+                            example: "Computers"
+  /store/ads:
+    get:
+      tags:
+        - store
+      summary: Retrieve, filter, search Ads
+      description: Shows only active ads
+      operationId: /store/ads
+      parameters:
+        - name: search
+          in: query
+          required: false
+          example: ""
+          schema:
+            type: string
+        - name: region_id
+          in: query
+          required: false
+          example: ""
+          schema:
+            $ref: '#/components/schemas/Region/properties/id'
+        - name: district_id
+          in: query
+          required: false
+          example: ""
+          schema:
+            $ref: '#/components/schemas/District/properties/id'
+        - name: category_ids
+          in: query
+          explode: false
+          required: false
+          example: []
+          schema:
+            type: array
+            items:
+              type: integer
+        - name: sub_category_ids
+          in: query
+          explode: false
+          required: false
+          example: []
+          schema:
+            type: array
+            items:
+              type: integer
+        - name: price__gte
+          in: query
+          required: false
+          example: ""
+          schema:
+            type: integer
+        - name: price__lte
+          in: query
+          required: false
+          example: ""
+          schema:
+            type: integer
+        - name: seller_id
+          in: query
+          required: false
+          example: ""
+          schema:
+            type: integer
+        - name: page
+          in: query
+          required: false
+          example: ""
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  count:
+                    type: integer
+                    example: 100
+                  page:
+                    type: integer
+                    example: 1
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Ad'
+        '404':
+          description: Page not found
+    post:
+      tags:
+        - store
+      summary: "Create Ad"
+      operationId: /store/ads/create
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                contact_info:
+                  type: object
+                  properties:
+                    full_name:
+                      type: string
+                      example: "Eshmatov Toshmat Boltayevich"
+                    email:
+                      type: string
+                      format: email
+                    phone_number:
+                      type: string
+                      pattern: "^\\+998\\d{9}$"
+                      example: "+998991234567"
+                    address:
+                      type: object
+                      properties:
+                        district_id:
+                          type: integer
+                          example: 1
+                        name:
+                          type: string
+                          example: "8897+PMP, Almachi Street"
+                        lat:
+                          type: number
+                          example: 69.420
+                        long:
+                          type: number
+                          example: 42.069
+
+                name:
+                  type: string
+                  example: "Laptop Pavilion HP new"
+                sub_category_id:
+                  type: integer
+                  example: 14
+                description:
+                  type: string
+                  example: "Nothing will hold you back with the HP Pavilion Aero Laptop. Incredibly lightweight and packs a punch to the most demanding tasks at hand. This laptop has a 16:10 micro-edge display[1] that lets you see more for a better entertainment experience and do more for your productivity. Get up to speed with the powerful performance of an AMD Processor"
+                price:
+                  type: integer
+                  example: 1_000_000
+                currency:
+                  type: string
+                  enum:
+                    - UZS
+                    - USD
+                  example: "UZS"
+                photos:
+                  type: array
+                  items:
+                    type: string
+                    format: binary
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Ad'
+        '400':
+          description: Invalid input
+  /store/ads/{slug}:
+    parameters:
+      - name: slug
+        in: path
+        required: true
+        example: "laptop-pavilion-hp-new-77"
+        schema:
+          type: string
+    get:
+      tags:
+        - store
+      summary: Get Single Ad
+      operationId: /store/ads/getBySlug
+      description: Shows only active or expired ad
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Ad'
+        '404':
+          description: Ad Not Found
+    delete:
+      tags:
+        - store
+      summary: Delete user's Ad
+      operationId: /store/ads/deleteBySlug
+      description: Delete user's Ad
+      responses:
+        '204':
+          description: Successful operation
+        '404':
+          description: Ad Not Found
+    patch:
+      tags:
+        - store
+      summary: "Update user's Ad"
+      operationId: /store/ads/update
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                contact_info:
+                  type: object
+                  properties:
+                    full_name:
+                      type: string
+                      example: "Eshmatov Toshmat Boltayevich"
+                    email:
+                      type: string
+                      format: email
+                    phone_number:
+                      type: string
+                      pattern: "^\\+998\\d{9}$"
+                      example: "+998991234567"
+                    address:
+                      type: object
+                      properties:
+                        district_id:
+                          type: integer
+                          example: 1
+                        name:
+                          type: string
+                          example: "8897+PMP, Almachi Street"
+                        lat:
+                          type: number
+                          example: 69.420
+                        long:
+                          type: number
+                          example: 42.069
+
+                name:
+                  type: string
+                  example: "Laptop Pavilion HP new"
+                sub_category_id:
+                  type: integer
+                  example: 14
+                description:
+                  type: string
+                  example: "Nothing will hold you back with the HP Pavilion Aero Laptop. Incredibly lightweight and packs a punch to the most demanding tasks at hand. This laptop has a 16:10 micro-edge display[1] that lets you see more for a better entertainment experience and do more for your productivity. Get up to speed with the powerful performance of an AMD Processor"
+                price:
+                  type: integer
+                  example: 1_000_000
+                currency:
+                  type: string
+                  enum:
+                    - UZS
+                    - USD
+                  example: "UZS"
+                photos:
+                  type: array
+                  items:
+                    type: string
+                    format: binary
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Ad'
+        '400':
+          description: Invalid input
+  /store/my-ads/:
+    get:
+      tags:
+        - store
+      summary: Retrieve user's Ads
+      operationId: /store/my-ads/
+      parameters:
+        - name: page
+          in: query
+          required: false
+          example: ""
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  count:
+                    type: integer
+                    example: 100
+                  page:
+                    type: integer
+                    example: 1
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Ad'
+        '404':
+          description: Page not found
+
+components:
+  schemas:
+    Region:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        name:
+          type: string
+          example: "Toshkent"
+    District:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 2
+        name:
+          type: string
+          example: "Chilonzor"
+        region:
+          $ref: '#/components/schemas/Region'
+    Category:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 7
+        name:
+          type: string
+          example: "Gaming technologies"
+        ads_count:
+          type: integer
+          example: 4147
+        icon:
+          type: string
+          example: "/media/categories/gaming_tech.png"
+    SubCategory:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 14
+        name: 
+          type: string
+          example: "Computers"
+        category:
+          $ref: '#/components/schemas/Category'
+    Ad:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 77
+        name:
+          type: string
+          example: "Laptop Pavilion HP new"
+        slug:
+          type: string
+          description: "In this format: {slugged name}-{id}"
+          example: "laptop-pavilion-hp-new-77"
+        sub_category:
+          $ref: '#/components/schemas/SubCategory'
+        photos:
+          type: array
+          items:
+            type: string
+            example: "/media/ads/2023/08/26/laptop_pavilion_hp_new_124af3afgtr45.png"
+        price:
+          type: integer
+          example: 1_000_000
+        currency:
+          type: string
+          example: "UZS"
+
+        published_at:
+          type: string
+          format: date-time
+        description:
+          type: string
+          example: "Nothing will hold you back with the HP Pavilion Aero Laptop. Incredibly lightweight and packs a punch to the most demanding tasks at hand. This laptop has a 16:10 micro-edge display[1] that lets you see more for a better entertainment experience and do more for your productivity. Get up to speed with the powerful performance of an AMD Processor"
+        phone_number:
+          type: string
+          pattern: "^\\+998\\d{9}$"
+          example: "+998991234567"
+        address:
+          type: object
+          properties:
+            district:
+              $ref: '#/components/schemas/District'
+            name:
+              type: string
+              example: "8897+PMP, Almachi Street"
+            lat:
+              type: number
+              example: 69.420
+            long:
+              type: number
+              example: 42.069
+        seller:
+          type: object
+          properties:
+            id:
+              type: integer
+              example: 1234
+            full_name:
+              type: string
+              example: "Eshmatov Toshmat Boltayevich"
+            profile_photo:
+              type: string
+              example: "/media/accounts/sellers/my_photo_12345.png"
+        extra:
+          $ref: '#/components/schemas/AdExtraInfo'
+    AdExtraInfo:
+      type: object
+      properties:
+        is_mine:
+          type: boolean
+          description: "Indicates if this Ad is published by the current user"
+          example: true
+        status:
+          type: string
+          enum:
+            - in_moderation
+            - rejected
+            - active
+            - expired
+          example: "active"
+        expires_at:
+          type: string
+          format: date
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+security:
+  - bearerAuth: []

@@ -1,0 +1,193 @@
+todo-app/
+|-- src/
+|   |-- Application/
+|   |   |-- UseCases/
+|   |   |   |-- CreateTodo/
+|   |   |   |   |-- CreateTodoUseCase.js
+|   |   |   |   |-- CreateTodoDTO.js
+|   |   |   |-- UpdateTodo/
+|   |   |   |   |-- UpdateTodoUseCase.js
+|   |   |   |   |-- UpdateTodoDTO.js
+|   |   |   |-- DeleteTodo/
+|   |   |   |   |-- DeleteTodoUseCase.js
+|   |   |   |   |-- DeleteTodoDTO.js
+|   |   |-- index.js
+|   |
+|   |-- Domain/
+|   |   |-- Todo/
+|   |   |   |-- TodoEntity.js
+|   |   |   |-- TodoRepository.js
+|   |   |   |-- TodoService.js
+|   |   |-- index.js
+|   |
+|   |-- Infrastructure/
+|   |   |-- Database/
+|   |   |   |-- TodoDatabase.js
+|   |   |-- Repositories/
+|   |   |   |-- TodoRepositoryImpl.js
+|   |   |-- index.js
+|   |
+|   |-- Interfaces/
+|   |   |-- HTTP/
+|   |   |   |-- Controllers/
+|   |   |   |   |-- TodoController.js
+|   |   |   |-- Routes/
+|   |   |   |   |-- todoRoutes.js
+|   |   |   |-- index.js
+|   |   |
+|   |   |-- CLI/
+|   |   |   |-- todoCLI.js
+|   |   |   |-- index.js
+|   |   |
+|   |-- Shared/
+|   |   |-- Logger.js
+|   |   |-- ErrorHandler.js
+|   |   |-- index.js
+|
+|-- tests/
+|   |-- Application/
+|   |   |-- UseCases/
+|   |   |   |-- CreateTodo/
+|   |   |   |   |-- CreateTodoUseCase.test.js
+|   |   |   |-- UpdateTodo/
+|   |   |   |   |-- UpdateTodoUseCase.test.js
+|   |   |   |-- DeleteTodo/
+|   |   |   |   |-- DeleteTodoUseCase.test.js
+|   |
+|   |-- Domain/
+|   |   |-- Todo/
+|   |   |   |-- TodoEntity.test.js
+|   |   |   |-- TodoService.test.js
+|   |
+|   |-- Infrastructure/
+|   |   |-- Database/
+|   |   |   |-- TodoDatabase.test.js
+|   |   |-- Repositories/
+|   |   |   |-- TodoRepositoryImpl.test.js
+|   |
+|   |-- Interfaces/
+|   |   |-- HTTP/
+|   |   |   |-- Controllers/
+|   |   |   |   |-- TodoController.test.js
+|   |
+|   |-- Shared/
+|   |   |-- Logger.test.js
+|   |   |-- ErrorHandler.test.js
+|
+|-- index.js (Entry point of the application)
+|-- package.json
+|-- .gitignore
+|-- README.md
+
+=================================================
+|-- app
+|   |-- Http
+|   |   |-- Controllers
+|   |   |-- Middleware
+|   |   |-- Routes
+|   |-- Providers
+|-- domain
+|   |-- Todo
+|   |   |-- Entities
+|   |   |-- Repositories
+|   |   |-- Services
+|   |   |-- Events
+|   |   |-- Exceptions
+|   |   |-- ValueObjects
+|   |-- User
+|   |   |-- Entities
+|   |   |-- Repositories
+|   |   |-- Services
+|   |   |-- Events
+|   |   |-- Exceptions
+|   |   |-- ValueObjects
+|-- infrastructure
+|   |-- Persistence
+|   |   |-- Migrations
+|   |   |-- Seeds
+|   |   |-- Repositories
+|   |-- Messaging
+|   |   |-- Consumers
+|   |   |-- Producers
+|   |-- External
+|   |   |-- APIs
+|   |   |-- Services
+|   |   |-- Libraries
+|-- resources
+|   |-- views
+|-- tests
+|   |-- Feature
+|   |-- Unit
+|-- routes
+|-- config
+|-- database
+|-- public
+
+=======================================================
+todo-app/
+  |- src/
+     |- Application/
+        |- Commands/
+           |- CreateTodoCommand.js
+           |- UpdateTodoCommand.js
+           |- DeleteTodoCommand.js
+        |- Queries/
+           |- GetTodoByIdQuery.js
+           |- GetAllTodosQuery.js
+        |- TodoService.js
+     |- Domain/
+        |- Entities/
+           |- Todo.js
+        |- Repositories/
+           |- TodoRepository.js
+        |- Services/
+           |- TodoDomainService.js
+        |- ValueObjects/
+           |- TodoId.js
+           |- TodoTitle.js
+           |- TodoDescription.js
+     |- Infrastructure/
+        |- Persistence/
+           |- TodoInMemoryRepository.js
+           |- TodoDatabaseRepository.js
+        |- Externals/
+           |- ExternalApiService.js
+     |- UI/
+        |- Controllers/
+           |- TodoController.js
+        |- Views/
+           |- TodoListView.js
+           |- TodoDetailsView.js
+  |- tests/
+     |- Application/
+        |- Commands/
+           |- CreateTodoCommand.test.js
+           |- UpdateTodoCommand.test.js
+           |- DeleteTodoCommand.test.js
+        |- Queries/
+           |- GetTodoByIdQuery.test.js
+           |- GetAllTodosQuery.test.js
+        |- TodoService.test.js
+     |- Domain/
+        |- Entities/
+           |- Todo.test.js
+        |- Repositories/
+           |- TodoRepository.test.js
+        |- Services/
+           |- TodoDomainService.test.js
+        |- ValueObjects/
+           |- TodoId.test.js
+           |- TodoTitle.test.js
+           |- TodoDescription.test.js
+     |- Infrastructure/
+        |- Persistence/
+           |- TodoInMemoryRepository.test.js
+           |- TodoDatabaseRepository.test.js
+        |- Externals/
+           |- ExternalApiService.test.js
+     |- UI/
+        |- Controllers/
+           |- TodoController.test.js
+        |- Views/
+           |- TodoListView.test.js
+           |- TodoDetailsView.test.js
