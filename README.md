@@ -1,3 +1,11 @@
+## First
+Create .env file copy .env.example
+then you need to write your own database configs default postges
+
+```bash
+$ docker compose up -d
+```
+
 ## Installation
 
 ```bash
